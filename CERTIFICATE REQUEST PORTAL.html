@@ -1,0 +1,1131 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Certificate Request Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* HEADER */
+
+        header {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 25px 7%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        header h1 {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            width: 86%;
+            max-width: 1250px;
+            margin: 30px auto;
+        }
+
+        /* DASHBOARD */
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            border-left: 5px solid #2563eb;
+        }
+
+        .card:nth-child(2) {
+            border-left-color: #f59e0b;
+        }
+
+        .card:nth-child(3) {
+            border-left-color: #10b981;
+        }
+
+        .card:nth-child(4) {
+            border-left-color: #ef4444;
+        }
+
+        .card h3 {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        /* FORM */
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            margin-bottom: 25px;
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .submit-btn {
+            margin-top: 18px;
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* CONTROLS */
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        /* REQUEST LIST */
+
+        .requests {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+
+        .request-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .request-item {
+            padding: 22px 25px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .request-item:last-child {
+            border-bottom: none;
+        }
+
+        .request-item:hover {
+            background: #f9fafb;
+        }
+
+        .request-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .student-name {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .request-id {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* STATUS */
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            height: fit-content;
+        }
+
+        .Pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .Approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .Rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* DETAILS */
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .detail {
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .detail strong {
+            display: block;
+            color: #6b7280;
+            font-size: 11px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .detail span {
+            font-size: 13px;
+        }
+
+        .purpose {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        /* ACTION BUTTONS */
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .actions button {
+            border: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .approve {
+            background: #10b981;
+            color: white;
+        }
+
+        .reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        .pending-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .delete {
+            background: #374151;
+            color: white;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #9ca3af;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .container {
+                width: 94%;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .request-top {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <h1>🎓 Certificate Request Portal</h1>
+
+    <p>
+        Submit, track and manage student certificate requests easily.
+    </p>
+
+</header>
+
+
+<div class="container">
+
+    <!-- DASHBOARD -->
+
+    <section class="dashboard">
+
+        <div class="card">
+            <h3>Total Requests</h3>
+            <div class="number" id="totalRequests">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Pending</h3>
+            <div class="number" id="pendingRequests">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Approved</h3>
+            <div class="number" id="approvedRequests">0</div>
+        </div>
+
+        <div class="card">
+            <h3>Rejected</h3>
+            <div class="number" id="rejectedRequests">0</div>
+        </div>
+
+    </section>
+
+
+    <!-- REQUEST FORM -->
+
+    <section class="form-section">
+
+        <h2>📝 Submit Certificate Request</h2>
+
+        <form id="requestForm">
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Student Name</label>
+
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter student name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Student ID</label>
+
+                    <input
+                        type="text"
+                        id="studentId"
+                        placeholder="Example: 23CS101"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="student@example.com"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Department</label>
+
+                    <select id="department" required>
+
+                        <option value="">Select Department</option>
+
+                        <option>Computer Science Engineering</option>
+
+                        <option>Information Technology</option>
+
+                        <option>Electronics and Communication</option>
+
+                        <option>Electrical Engineering</option>
+
+                        <option>Mechanical Engineering</option>
+
+                        <option>Civil Engineering</option>
+
+                        <option>Artificial Intelligence & Data Science</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Certificate Type</label>
+
+                    <select id="certificate" required>
+
+                        <option value="">Select Certificate</option>
+
+                        <option>Bonafide Certificate</option>
+
+                        <option>Transfer Certificate</option>
+
+                        <option>Course Completion Certificate</option>
+
+                        <option>Conduct Certificate</option>
+
+                        <option>Migration Certificate</option>
+
+                        <option>Character Certificate</option>
+
+                        <option>Degree Certificate</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Priority</label>
+
+                    <select id="priority">
+
+                        <option value="Normal">Normal</option>
+
+                        <option value="Urgent">Urgent</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="input-group full">
+
+                    <label>Purpose / Reason</label>
+
+                    <textarea
+                        id="purpose"
+                        placeholder="Enter the purpose for requesting the certificate..."
+                        required
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Submit Request
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- SEARCH AND FILTER -->
+
+    <div class="controls">
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="🔍 Search by name, ID or certificate..."
+        >
+
+
+        <select id="filter">
+
+            <option value="All">All Requests</option>
+
+            <option value="Pending">Pending</option>
+
+            <option value="Approved">Approved</option>
+
+            <option value="Rejected">Rejected</option>
+
+        </select>
+
+    </div>
+
+
+    <!-- REQUEST LIST -->
+
+    <section class="requests">
+
+        <div class="request-header">
+
+            <h2>📋 Certificate Requests</h2>
+
+        </div>
+
+        <div id="requestList"></div>
+
+    </section>
+
+</div>
+
+
+<footer>
+
+    Certificate Request Portal © 2026
+
+</footer>
+
+
+<script>
+
+    /* =====================================
+       DATA
+    ===================================== */
+
+    let requests =
+        JSON.parse(localStorage.getItem("certificateRequests")) || [];
+
+
+    const form =
+        document.getElementById("requestForm");
+
+    const requestList =
+        document.getElementById("requestList");
+
+    const search =
+        document.getElementById("search");
+
+    const filter =
+        document.getElementById("filter");
+
+
+    /* =====================================
+       SAVE DATA
+    ===================================== */
+
+    function saveRequests() {
+
+        localStorage.setItem(
+            "certificateRequests",
+            JSON.stringify(requests)
+        );
+
+    }
+
+
+    /* =====================================
+       GENERATE REQUEST ID
+    ===================================== */
+
+    function generateRequestId() {
+
+        const number =
+            Math.floor(1000 + Math.random() * 9000);
+
+        return "CERT-" + number;
+
+    }
+
+
+    /* =====================================
+       UPDATE DASHBOARD
+    ===================================== */
+
+    function updateDashboard() {
+
+        const total =
+            requests.length;
+
+        const pending =
+            requests.filter(
+                r => r.status === "Pending"
+            ).length;
+
+        const approved =
+            requests.filter(
+                r => r.status === "Approved"
+            ).length;
+
+        const rejected =
+            requests.filter(
+                r => r.status === "Rejected"
+            ).length;
+
+
+        document.getElementById(
+            "totalRequests"
+        ).textContent = total;
+
+
+        document.getElementById(
+            "pendingRequests"
+        ).textContent = pending;
+
+
+        document.getElementById(
+            "approvedRequests"
+        ).textContent = approved;
+
+
+        document.getElementById(
+            "rejectedRequests"
+        ).textContent = rejected;
+
+    }
+
+
+    /* =====================================
+       DISPLAY REQUESTS
+    ===================================== */
+
+    function displayRequests() {
+
+        const searchText =
+            search.value.toLowerCase();
+
+        const selectedFilter =
+            filter.value;
+
+
+        const filtered =
+            requests.filter(request => {
+
+                const matchesSearch =
+
+                    request.studentName
+                        .toLowerCase()
+                        .includes(searchText)
+
+                    ||
+
+                    request.studentId
+                        .toLowerCase()
+                        .includes(searchText)
+
+                    ||
+
+                    request.certificate
+                        .toLowerCase()
+                        .includes(searchText);
+
+
+                const matchesFilter =
+
+                    selectedFilter === "All"
+
+                    ||
+
+                    request.status === selectedFilter;
+
+
+                return matchesSearch && matchesFilter;
+
+            });
+
+
+        requestList.innerHTML = "";
+
+
+        if (filtered.length === 0) {
+
+            requestList.innerHTML = `
+
+                <div class="empty">
+
+                    <h3>No certificate requests found</h3>
+
+                    <p>
+                        Submit a request using the form above.
+                    </p>
+
+                </div>
+
+            `;
+
+            updateDashboard();
+
+            return;
+        }
+
+
+        filtered.forEach(request => {
+
+            const item =
+                document.createElement("div");
+
+
+            item.className =
+                "request-item";
+
+
+            item.innerHTML = `
+
+                <div class="request-top">
+
+                    <div>
+
+                        <div class="student-name">
+
+                            ${request.studentName}
+
+                        </div>
+
+                        <div class="request-id">
+
+                            Request ID:
+                            <strong>${request.requestId}</strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <span class="status ${request.status}">
+
+                        ${request.status}
+
+                    </span>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <strong>Student ID</strong>
+
+                        <span>
+                            ${request.studentId}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>Department</strong>
+
+                        <span>
+                            ${request.department}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>Certificate</strong>
+
+                        <span>
+                            ${request.certificate}
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <strong>Priority</strong>
+
+                        <span>
+                            ${request.priority}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="purpose">
+
+                    <strong>Purpose:</strong>
+
+                    ${request.purpose}
+
+                    <br><br>
+
+                    <small>
+                        📧 ${request.email}
+                        &nbsp; | &nbsp;
+                        📅 ${request.date}
+                    </small>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        class="approve"
+                        onclick="changeStatus('${request.requestId}', 'Approved')">
+
+                        ✓ Approve
+
+                    </button>
+
+
+                    <button
+                        class="reject"
+                        onclick="changeStatus('${request.requestId}', 'Rejected')">
+
+                        ✕ Reject
+
+                    </button>
+
+
+                    <button
+                        class="pending-btn"
+                        onclick="changeStatus('${request.requestId}', 'Pending')">
+
+                        ⟳ Pending
+
+                    </button>
+
+
+                    <button
+                        class="delete"
+                        onclick="deleteRequest('${request.requestId}')">
+
+                        🗑 Delete
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            requestList.appendChild(item);
+
+        });
+
+
+        updateDashboard();
+
+    }
+
+
+    /* =====================================
+       SUBMIT REQUEST
+    ===================================== */
+
+    form.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const request = {
+
+                requestId:
+                    generateRequestId(),
+
+                studentName:
+                    document.getElementById(
+                        "studentName"
+                    ).value.trim(),
+
+                studentId:
+                    document.getElementById(
+                        "studentId"
+                    ).value.trim(),
+
+                email:
+                    document.getElementById(
+                        "email"
+                    ).value.trim(),
+
+                department:
+                    document.getElementById(
+                        "department"
+                    ).value,
+
+                certificate:
+                    document.getElementById(
+                        "certificate"
+                    ).value,
+
+                priority:
+                    document.getElementById(
+                        "priority"
+                    ).value,
+
+                purpose:
+                    document.getElementById(
+                        "purpose"
+                    ).value.trim(),
+
+                status:
+                    "Pending",
+
+                date:
+                    new Date().toLocaleDateString(
+                        "en-IN"
+                    )
+
+            };
+
+
+            requests.unshift(request);
+
+
+            saveRequests();
+
+
+            form.reset();
+
+
+            displayRequests();
+
+
+            alert(
+                "Certificate request submitted successfully!\n\nRequest ID: "
+                + request.requestId
+            );
+
+        }
+    );
+
+
+    /* =====================================
+       CHANGE STATUS
+    ===================================== */
+
+    function changeStatus(
+        requestId,
+        newStatus
+    ) {
+
+        requests =
+            requests.map(request => {
+
+                if (
+                    request.requestId === requestId
+                ) {
+
+                    request.status =
+                        newStatus;
+
+                }
+
+                return request;
+
+            });
+
+
+        saveRequests();
+
+        displayRequests();
+
+    }
+
+
+    /* =====================================
+       DELETE REQUEST
+    ===================================== */
+
+    function deleteRequest(requestId) {
+
+        const confirmation =
+            confirm(
+                "Are you sure you want to delete this request?"
+            );
+
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        requests =
+            requests.filter(
+                request =>
+                    request.requestId !== requestId
+            );
+
+
+        saveRequests();
+
+        displayRequests();
+
+    }
+
+
+    /* =====================================
+       SEARCH
+    ===================================== */
+
+    search.addEventListener(
+        "input",
+        displayRequests
+    );
+
+
+    /* =====================================
+       FILTER
+    ===================================== */
+
+    filter.addEventListener(
+        "change",
+        displayRequests
+    );
+
+
+    /* =====================================
+       INITIAL LOAD
+    ===================================== */
+
+    displayRequests();
+
+</script>
+
+</body>
+</html>
+```
